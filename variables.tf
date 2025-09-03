@@ -33,3 +33,9 @@ variable "location" {
   type        = string
   default     = "atelier"
 }
+
+variable "basedomain" {
+  description = "Domain name where to expose services"
+  type        = string
+  default     = "spaceup.tbotech.sk"
+}

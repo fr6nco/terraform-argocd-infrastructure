@@ -23,7 +23,7 @@ locals {
     "apiVersion" = "argoproj.io/v1alpha1"
     "kind"       = "Application"
     "metadata" = {
-      "name"      = "${var.company}-${var.cluster}-infra"
+      "name"      = "infra"
       "namespace" = "argocd"
       "finalizers" = [
         "resources-finalizer.argocd.argoproj.io"
@@ -84,13 +84,21 @@ resource "kubernetes_secret" "incluster-config" {
       "cluster"                        = var.cluster
       "location"                       = var.location
       "argocd.argoproj.io/secret-type" = "cluster"
+      "argo_cd_enabled"                = "true"
+    }
+
+    annotations = {
+      infra_repo_url      = coalesce(var.infra_repo_url_override, "git@github.com:fr6nco/${var.github_infra_repo_path}.git")
+      infra_repo_revision = var.infra_repo_revision
+      basedomain          = var.basedomain
     }
   }
 
   data = {
-    config = "{\"tlsClientConfig\":{\"insecure\":false}}"
-    name   = "in-cluster"
-    server = "https://kubernetes.default.svc"
+    config   = "{\"tlsClientConfig\":{\"insecure\":false}}"
+    name     = "in-cluster"
+    server   = "https://kubernetes.default.svc"
+    env_name = "${var.company}-${var.cluster}-${var.location}"
   }
 
   type = "Opaque"
