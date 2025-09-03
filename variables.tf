@@ -39,3 +39,9 @@ variable "basedomain" {
   type        = string
   default     = "spaceup.tbotech.sk"
 }
+
+variable "gitops_addons_labels" {
+  description = "Labels to apply to GitOps addons"
+  type        = map(string)
+  default     = {}
+}

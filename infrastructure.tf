@@ -79,13 +79,12 @@ resource "kubernetes_secret" "incluster-config" {
     name      = "cluster-kubernetes.default.svc"
     namespace = "argocd"
 
-    labels = {
+    labels = merge({
       "company"                        = var.company
       "cluster"                        = var.cluster
       "location"                       = var.location
       "argocd.argoproj.io/secret-type" = "cluster"
-      "argo_cd_enabled"                = "true"
-    }
+    }, var.gitops_addons_labels)
 
     annotations = {
       infra_repo_url      = coalesce(var.infra_repo_url_override, "git@github.com:fr6nco/${var.github_infra_repo_path}.git")
