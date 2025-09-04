@@ -45,3 +45,9 @@ variable "gitops_addons_labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "gitops_addons_annotations" {
+  description = "Annotations to apply to GitOps addons"
+  type        = map(string)
+  default     = {}
+}

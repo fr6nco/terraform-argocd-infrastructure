@@ -86,11 +86,11 @@ resource "kubernetes_secret" "incluster-config" {
       "argocd.argoproj.io/secret-type" = "cluster"
     }, var.gitops_addons_labels)
 
-    annotations = {
+    annotations = merge({
       infra_repo_url      = coalesce(var.infra_repo_url_override, "git@github.com:fr6nco/${var.github_infra_repo_path}.git")
       infra_repo_revision = var.infra_repo_revision
       basedomain          = var.basedomain
-    }
+    }, var.gitops_addons_annotations)
   }
 
   data = {
