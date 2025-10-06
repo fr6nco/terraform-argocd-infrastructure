@@ -16,6 +16,32 @@ variable "infra_repo_owner" {
   default     = "fr6nco"
 }
 
+variable "github_env_repo_path" {
+  description = "Path of the environment repository"
+  type        = string
+  nullable    = true
+  default     = "argocd-infrastructure-base"
+}
+
+variable "env_repo_revision" {
+  description = "Revision of the environment repository"
+  type        = string
+  default     = "HEAD"
+}
+
+variable "env_repo_owner" {
+  description = "Owner of the environment repository"
+  type        = string
+  default     = "fr6nco"
+}
+
+variable "env_repo_addon_overrides_path" {
+  description = "Path to the addon overrides in the environment repository"
+  type        = string
+  nullable    = true
+  default     = null
+}
+
 # Deprecated, use infra_repo_owner and github_infra_repo_path instead
 variable "infra_repo_url_override" {
   description = "Override the default URL of the infrastructure repository"
@@ -28,6 +54,12 @@ variable "company" {
   description = "Name of the company"
   type        = string
   default     = "tbotech"
+}
+
+variable "env" {
+  description = "Environment name"
+  type        = string
+  default     = "prod"
 }
 
 variable "cluster" {
@@ -57,5 +89,11 @@ variable "gitops_addons_labels" {
 variable "gitops_addons_annotations" {
   description = "Annotations to apply to GitOps addons"
   type        = map(string)
+  default     = {}
+}
+
+variable "additional_repositories" {
+  description = "Additional repositories to add to ArgoCD"
+  type        = map(any)
   default     = {}
 }

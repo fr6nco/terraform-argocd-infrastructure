@@ -48,6 +48,8 @@ locals {
       }
     }
   }
+
+  cluster_id = "${var.company}-${var.env}-${var.cluster}-${var.location}"
 }
 
 resource "tls_private_key" "infra_base_deploy_key" {
@@ -87,9 +89,12 @@ resource "kubernetes_secret" "incluster-config" {
     }, var.gitops_addons_labels)
 
     annotations = merge({
-      infra_repo_url      = "git@github.com:${var.infra_repo_owner}/${var.github_infra_repo_path}.git"
-      infra_repo_revision = var.infra_repo_revision
-      basedomain          = var.basedomain
+      infra_repo_url                = "git@github.com:${var.infra_repo_owner}/${var.github_infra_repo_path}.git"
+      infra_repo_revision           = var.infra_repo_revision
+      basedomain                    = var.basedomain
+      env_repo_url                  = "git@github.com:${var.env_repo_owner}/${var.github_env_repo_path}.git"
+      env_repo_revision             = var.env_repo_revision
+      env_repo_addon_overrides_path = var.env_repo_addon_overrides_path != null ? var.env_repo_addon_overrides_path : "overrides/${local.cluster_id}"
     }, var.gitops_addons_annotations)
   }
 
@@ -97,7 +102,7 @@ resource "kubernetes_secret" "incluster-config" {
     config   = "{\"tlsClientConfig\":{\"insecure\":false}}"
     name     = "in-cluster"
     server   = "https://kubernetes.default.svc"
-    env_name = "${var.company}-${var.cluster}-${var.location}"
+    env_name = local.cluster_id
   }
 
   type = "Opaque"
