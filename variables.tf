@@ -10,10 +10,18 @@ variable "infra_repo_revision" {
   default     = "HEAD"
 }
 
+variable "infra_repo_owner" {
+  description = "Owner of the infrastructure repository"
+  type        = string
+  default     = "fr6nco"
+}
+
+# Deprecated, use infra_repo_owner and github_infra_repo_path instead
 variable "infra_repo_url_override" {
   description = "Override the default URL of the infrastructure repository"
   type        = string
   default     = ""
+  deprecated  = "Use infra_repo_owner and github_infra_repo_path instead"
 }
 
 variable "company" {

@@ -15,7 +15,7 @@ locals {
       name          = "argocd-infrastructure-base"
       sshPrivateKey = tls_private_key.infra_base_deploy_key.private_key_pem
       type          = "git"
-      url           = coalesce(var.infra_repo_url_override, "git@github.com:fr6nco/${var.github_infra_repo_path}.git")
+      url           = "git@github.com:${var.infra_repo_owner}/${var.github_infra_repo_path}.git"
     }
   }
 
@@ -32,7 +32,7 @@ locals {
     "spec" = {
       "project" = "default"
       "source" = {
-        "repoURL"        = coalesce(var.infra_repo_url_override, "git@github.com:fr6nco/${var.github_infra_repo_path}.git")
+        "repoURL"        = "git@github.com:${var.infra_repo_owner}/${var.github_infra_repo_path}.git"
         "targetRevision" = var.infra_repo_revision
         "path"           = "apps"
       }
@@ -87,7 +87,7 @@ resource "kubernetes_secret" "incluster-config" {
     }, var.gitops_addons_labels)
 
     annotations = merge({
-      infra_repo_url      = coalesce(var.infra_repo_url_override, "git@github.com:fr6nco/${var.github_infra_repo_path}.git")
+      infra_repo_url      = "git@github.com:${var.infra_repo_owner}/${var.github_infra_repo_path}.git"
       infra_repo_revision = var.infra_repo_revision
       basedomain          = var.basedomain
     }, var.gitops_addons_annotations)
