@@ -97,3 +97,9 @@ variable "additional_repositories" {
   type        = map(any)
   default     = {}
 }
+
+variable "additional_bootstrap_apps" {
+  description = "Additional bootstrap applications to add to ArgoCD"
+  type        = map(any)
+  default     = {}
+}
