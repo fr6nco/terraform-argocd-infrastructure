@@ -82,6 +82,7 @@ resource "kubernetes_secret" "incluster-config" {
     namespace = "argocd"
 
     labels = merge({
+      "env_name"                       = local.cluster_id
       "company"                        = var.company
       "cluster"                        = var.cluster
       "location"                       = var.location
